@@ -32,13 +32,17 @@ repositories {
     }
 }
 
-dependencies {
-    compile group: 'com.google.guava', name: 'guava', version: '23.5-jre'
+minecraft {
+    intermediaryUrl = {
+        return "https://dl.bintray.com/legacy-fabric/Legacy-Fabric-Maven/net/fabricmc/intermediary/" + it + "/intermediary-" + it + "-v2.jar";
+    }
+}
 
-    //to change the versions see the gradle.properties file
+dependencies {
+    compile "com.google.guava:guava:23.5-jre"
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}"
-    modImplementation ("net.fabricmc:fabric-loader-1.8.9:${project.loader_version}") {
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modCompile ("net.fabricmc:fabric-loader-1.8.9:${project.loader_version}") {
         exclude module: "guava"
     }
 
