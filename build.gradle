@@ -1,6 +1,6 @@
 plugins {
     id 'maven-publish'
-    id 'fabric-loom' version "0.2.7-SNAPSHOT"
+    id 'fabric-loom' version "0.4-SNAPSHOT"
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -12,11 +12,10 @@ group = project.maven_group
 
 repositories {
     mavenCentral()
-    mavenLocal()
     jcenter()
     maven {
         name = 'Fabric'
-        url = 'http://maven.modmuss50.me/'
+        url = 'http://maven.fabricmc.net/'
     }
     maven {
         name = 'SpongePowered'
