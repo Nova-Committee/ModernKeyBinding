@@ -23,6 +23,14 @@ minecraft {
 	}
 }
 
+loom {
+	runs {
+		client {
+			programArgs "--userProperties", "{}"
+		}
+	}
+}
+
 dependencies {
 	implementation "com.google.guava:guava:23.5-jre"
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
