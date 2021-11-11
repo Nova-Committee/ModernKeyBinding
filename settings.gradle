@@ -1,7 +1,4 @@
 pluginManagement {
-	plugins {
-		id 'fabric-loom' version "${loom_version}"
-	}
 	repositories {
 		maven {
 			name = 'Fabric'
