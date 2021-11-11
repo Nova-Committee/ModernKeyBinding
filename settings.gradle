@@ -12,7 +12,7 @@ pluginManagement {
 	}
 	resolutionStrategy {
 		eachPlugin {
-			if (requested.id.id == "fabric-loom" && loom_version.endsWith("-SNAPSHOT") != true) {
+			if (requested.id.id == "fabric-loom" && requested.version?.endsWith("-SNAPSHOT") != true) {
 				useModule("com.github.Chocohead.Fabric-Loom:fabric-loom:${requested.version}")
 			}
 		}
