@@ -1,6 +1,6 @@
 plugins {
+	id 'fabric-loom' version "0.7-SNAPSHOT" // To use chocoloom, change the version to a commit hash
 	id 'maven-publish'
-	id 'fabric-loom' version "0.7-SNAPSHOT"
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -12,11 +12,12 @@ group = project.maven_group
 
 repositories {
 	maven {
-		name = 'legacy-fabric'
-		url = 'https://maven.legacyfabric.net/'
+		name = "legacy-fabric"
+		url = "https://maven.legacyfabric.net"
 	}
 }
 
+// Comment out this block if you're using Chocoloom
 // Comment when using loom 0.10
 minecraft {
 	intermediaryUrl = {
@@ -25,9 +26,8 @@ minecraft {
 }
 
 loom {
-	// Uncomment when using loom 0.10
+// Uncomment when using loom 0.10
 //	setIntermediaryUrl('https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar');
-
 
 	runs {
 		client {
