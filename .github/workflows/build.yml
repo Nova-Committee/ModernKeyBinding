@@ -11,9 +11,7 @@ jobs:
     strategy:
       matrix:
         java: [
-            "8",  # Minecraft default
-            "11", # Current Java LTS
-            "17", # Latest version
+            "17" # Latest version
           ]
     runs-on: ubuntu-latest
     steps:
