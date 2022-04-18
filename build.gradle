@@ -34,7 +34,6 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Only available for 1.8.9 as of March 20 of 2022.
 	// Fabric API provides hooks for events, item registration, and more. As most mods will need this, it's included by default. 
 	// If you know for a fact you don't, it's not required and can be safely removed.
 	modImplementation ("net.legacyfabric.legacy-fabric-api:legacy-fabric-api:${fabric_version}")
