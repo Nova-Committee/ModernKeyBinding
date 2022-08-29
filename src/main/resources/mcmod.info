@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "examplemod",
+    "name": "ExampleMod",
+    "description": "Example mixined scala mod!",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "Author"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
