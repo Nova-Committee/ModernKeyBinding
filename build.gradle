@@ -67,8 +67,8 @@ processResources
 //Add
 //--tweakClass org.spongepowered.asm.launch.MixinTweaker --mixin mixins.examplemod.json
 //to your client and server program arguments if working in a dev environment.
-def yourMixinConfig = 'mixins.examplemod.json'
-def refMapForYourConfig = 'mixins.examplemod.refmap.json'
+def yourMixinConfig = "mixins.${modId}.json"
+def refMapForYourConfig = "mixins.${modId}.refmap.json"
 def relativePathToMixinAP = 'libs/mixin-0.8-SNAPSHOT.jar'
 
 repositories {
