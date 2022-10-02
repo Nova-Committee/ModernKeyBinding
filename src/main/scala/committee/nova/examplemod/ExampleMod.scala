@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager
 object ExampleMod {
   final val LOGGER = LogManager.getLogger
   final val MODID = "examplemod"
-  final val packagePrefix = s"committee.nova.$MODID.proxies."
+  final val packagePrefix = "committee.nova." + MODID + ".proxies."
 
   @SidedProxy(serverSide = packagePrefix + "CommonProxy", clientSide = packagePrefix + "ClientProxy")
   var proxy: CommonProxy = _
