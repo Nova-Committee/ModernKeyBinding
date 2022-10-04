@@ -71,6 +71,12 @@ def yourMixinConfig = "mixins.${modId}.json"
 def refMapForYourConfig = "mixins.${modId}.refmap.json"
 def relativePathToMixinAP = 'libs/mixin-0.8-SNAPSHOT.jar'
 
+def embedMixin = !project.hasProperty("nomixin");
+
+if (!embedMixin) {
+    version += "-mixinless"
+}
+
 repositories {
     maven {
         name = "sponge"
@@ -79,13 +85,24 @@ repositories {
 }
 
 dependencies {
-    embed('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
-        // Mixin includes a lot of dependencies that are too up-to-date
-        exclude module: 'launchwrapper'
-        exclude module: 'guava'
-        exclude module: 'gson'
-        exclude module: 'commons-io'
-        exclude module: 'log4j-core'
+    if (embedMixin) {
+        embed('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+            // Mixin includes a lot of dependencies that are too up-to-date
+            exclude module: 'launchwrapper'
+            exclude module: 'guava'
+            exclude module: 'gson'
+            exclude module: 'commons-io'
+            exclude module: 'log4j-core'
+        }
+    } else {
+        compile('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+            // Mixin includes a lot of dependencies that are too up-to-date
+            exclude module: 'launchwrapper'
+            exclude module: 'guava'
+            exclude module: 'gson'
+            exclude module: 'commons-io'
+            exclude module: 'log4j-core'
+        }
     }
 }
 
