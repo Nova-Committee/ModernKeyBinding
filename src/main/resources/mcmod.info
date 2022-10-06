@@ -1,14 +1,14 @@
 [
   {
-    "modid": "examplemod",
-    "name": "ExampleMod",
-    "description": "Example mixined scala mod!",
+    "modid": "mkb",
+    "name": "ModernKeyBinding",
+    "description": "Port Forge changes on keybinding",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "",
     "updateUrl": "",
     "authorList": [
-      "Author"
+      "Tapio"
     ],
     "credits": "",
     "logoFile": "",
