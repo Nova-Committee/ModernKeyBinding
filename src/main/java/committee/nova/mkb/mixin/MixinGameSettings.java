@@ -3,7 +3,6 @@ package committee.nova.mkb.mixin;
 import committee.nova.mkb.keybinding.IKeyConflictContext;
 import committee.nova.mkb.keybinding.KeyConflictContext;
 import committee.nova.mkb.keybinding.KeyModifier;
-import committee.nova.mkb.util.Utilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -11,13 +10,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.PrintWriter;
 
 @Mixin(GameSettings.class)
 public abstract class MixinGameSettings {
@@ -72,30 +71,27 @@ public abstract class MixinGameSettings {
         setForgeKeyBindProperties();
     }
 
-    @ModifyArg(method = "saveOptions", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V", ordinal = 55))
-    public String onSaveOptions(String x) {
-        final int i = Utilities.getFirstOn(x, ':');
-        if (i == -1) return x;
-        int keyCode;
-        try {
-            keyCode = Integer.parseInt(x.substring(i + 1));
-        } catch (NumberFormatException e) {
-            return x;
-        }
-        final KeyBinding keyBinding = Utilities.getKeyBindingByCode(keyCode);
-        if (keyBinding == null) return x;
-        final IKeyBinding mixined = (IKeyBinding) keyBinding;
-        return mixined.getKeyModifier() != KeyModifier.NONE ? x + ":" + mixined.getKeyModifier() : x;
+    @Redirect(method = "saveOptions", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V", ordinal = 55))
+    public void trapSaveOptions(PrintWriter instance, String s) {
+        // Do nothing
     }
 
-    // Trap redirect
+    @Inject(method = "saveOptions", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/audio/SoundCategory;values()[Lnet/minecraft/client/audio/SoundCategory;"), locals = LocalCapture.CAPTURE_FAILHARD)
+    public void onSaveOptions(CallbackInfo ci, PrintWriter printwriter, KeyBinding[] keyBindings) {
+        for (final KeyBinding binding : keyBindings) {
+            final String x = "key_" + binding.getKeyDescription() + ":" + binding.getKeyCode();
+            final IKeyBinding mixined = (IKeyBinding) binding;
+            printwriter.println(mixined.getKeyModifier() != KeyModifier.NONE ? x + ":" + mixined.getKeyModifier() : x);
+        }
+    }
+
     @Redirect(method = "loadOptions", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyCode(I)V"))
-    public void onLoadOptions1(KeyBinding instance, int p_151462_1_) {
-        //Do nothing
+    public void trapLoadOptions(KeyBinding instance, int p_151462_1_) {
+        // Do nothing
     }
 
     @Inject(method = "loadOptions", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/audio/SoundCategory;values()[Lnet/minecraft/client/audio/SoundCategory;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void onLoadOptions2(CallbackInfo ci, BufferedReader bufferedreader, String s, String[] aString, KeyBinding[] aKeybinding, int i) {
+    public void onLoadOptions(CallbackInfo ci, BufferedReader bufferedreader, String s, String[] aString, KeyBinding[] aKeybinding, int i) {
         for (int j = 0; j < i; ++j) {
             KeyBinding keybind = aKeybinding[j];
 

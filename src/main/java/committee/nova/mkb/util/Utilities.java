@@ -21,18 +21,11 @@ public class Utilities {
         }
     }
 
-    public static KeyBinding getKeyBindingByCode(int keyCode) {
-        for (KeyBinding keyBinding : AccessorKeyBinding.getKeybindArray()) {
-            if (keyCode == keyBinding.getKeyCode()) return keyBinding;
-        }
-        return null;
-    }
-
-    public static int getFirstOn(String origin, char target) {
-        final int length = origin.length();
-        for (int i = 0; i < length; i++) {
-            if (target == origin.charAt(i)) return i;
-        }
-        return -1;
-    }
+    //public static int getFirstOn(String origin, char target) {
+    //    final int length = origin.length();
+    //    for (int i = 0; i < length; i++) {
+    //        if (target == origin.charAt(i)) return i;
+    //    }
+    //    return -1;
+    //}
 }
