@@ -79,13 +79,13 @@ public abstract class MixinGuiControls extends GuiScreen {
     public void onDrawScreen(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
         final KeyBinding[] keyBindings = options.keyBindings;
         final int x = keyBindings.length;
-        boolean flag1 = true;
+        boolean flag1 = false;
         for (KeyBinding keybinding : keyBindings) {
-            if (keybinding.getKeyCode() != keybinding.getKeyCodeDefault()) {
-                flag1 = false;
+            if (!((IKeyBinding) keybinding).isSetToDefaultValue()) {
+                flag1 = true;
                 break;
             }
         }
-        field_146493_s.enabled = !flag1;
+        field_146493_s.enabled = flag1;
     }
 }
