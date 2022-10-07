@@ -1,11 +1,15 @@
 package committee.nova.mkb.mixin;
 
+import committee.nova.mkb.keybinding.IKeyBinding;
 import committee.nova.mkb.keybinding.KeyModifier;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiControls;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuiControls.class)
-public abstract class MixinGuiControls {
+public abstract class MixinGuiControls extends GuiScreen {
     @Shadow
     public KeyBinding buttonId;
 
@@ -23,15 +27,42 @@ public abstract class MixinGuiControls {
     @Shadow
     private GuiButton field_146493_s;
 
+    @Shadow
+    public long field_152177_g;
+
     @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/GameSettings;setOptionKeyBinding(Lnet/minecraft/client/settings/KeyBinding;I)V"))
     public void onMouseClicked(int mouseX, int mouseY, int mouseButton, CallbackInfo ci) {
         ((IKeyBinding) buttonId).setKeyModifierAndCode(KeyModifier.getActiveModifier(), -100 + mouseButton);
     }
 
-    @Inject(method = "keyTyped", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/GameSettings;setOptionKeyBinding(Lnet/minecraft/client/settings/KeyBinding;I)V"))
-    public void onKeyTyped(char typedChar, int keyCode, CallbackInfo ci) {
-        final boolean flag = keyCode == 1;
-        ((IKeyBinding) buttonId).setKeyModifierAndCode(flag ? KeyModifier.NONE : KeyModifier.getActiveModifier(), flag ? 0 : keyCode);
+    /**
+     * @author Tapio
+     * @reason Don't want to write 2 injects
+     */
+    @Overwrite
+    public void keyTyped(char typedChar, int keyCode) {
+        if (buttonId == null) {
+            if (keyCode == 1) {
+                this.mc.displayGuiScreen((GuiScreen) null);
+                this.mc.setIngameFocus();
+            }
+            return;
+        }
+        final IKeyBinding mixined = (IKeyBinding) buttonId;
+        if (keyCode == 1) {
+            mixined.setKeyModifierAndCode(KeyModifier.NONE, 0);
+            this.options.setOptionKeyBinding(this.buttonId, 0);
+        } else if (keyCode != 0) {
+            mixined.setKeyModifierAndCode(KeyModifier.getActiveModifier(), keyCode);
+            this.options.setOptionKeyBinding(this.buttonId, keyCode);
+        } else if (typedChar > 0) {
+            mixined.setKeyModifierAndCode(KeyModifier.getActiveModifier(), typedChar + 256);
+            this.options.setOptionKeyBinding(this.buttonId, typedChar + 256);
+        }
+
+        if (!KeyModifier.isKeyCodeModifier(keyCode)) this.buttonId = null;
+        this.field_152177_g = Minecraft.getSystemTime();
+        KeyBinding.resetKeyBindingArrayAndHash();
     }
 
     @Redirect(method = "actionPerformed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyCode(I)V"))

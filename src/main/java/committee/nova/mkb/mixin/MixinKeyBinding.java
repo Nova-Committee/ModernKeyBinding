@@ -1,9 +1,6 @@
 package committee.nova.mkb.mixin;
 
-import committee.nova.mkb.keybinding.IKeyConflictContext;
-import committee.nova.mkb.keybinding.KeyBindingMap;
-import committee.nova.mkb.keybinding.KeyConflictContext;
-import committee.nova.mkb.keybinding.KeyModifier;
+import committee.nova.mkb.keybinding.*;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.IntHashMap;
 import org.spongepowered.asm.mixin.*;
@@ -76,8 +73,8 @@ public abstract class MixinKeyBinding implements IKeyBinding {
         //todo: is this correct?
         keybindArray.add((KeyBinding) (Object) this);
         //todo
-        newHash.addKey(keyCode, (KeyBinding) (Object) this);
         keybindSet.add(category);
+        newHash.addKey(keyCode, (KeyBinding) (Object) this);
     }
 
     @Override
@@ -92,17 +89,17 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 
     @Override
     public IKeyConflictContext getKeyConflictContext() {
-        return keyConflictContext;
+        return keyConflictContext != null ? keyConflictContext : KeyConflictContext.UNIVERSAL;
     }
 
     @Override
     public KeyModifier getKeyModifierDefault() {
-        return keyModifierDefault;
+        return keyModifierDefault != null ? keyModifierDefault : KeyModifier.NONE;
     }
 
     @Override
     public KeyModifier getKeyModifier() {
-        return keyModifier;
+        return keyModifier != null ? keyModifier : KeyModifier.NONE;
     }
 
     @Override

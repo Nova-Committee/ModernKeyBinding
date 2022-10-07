@@ -1,5 +1,6 @@
 package committee.nova.mkb.mixin;
 
+import committee.nova.mkb.keybinding.IKeyBinding;
 import committee.nova.mkb.keybinding.IKeyConflictContext;
 import committee.nova.mkb.keybinding.KeyConflictContext;
 import committee.nova.mkb.keybinding.KeyModifier;

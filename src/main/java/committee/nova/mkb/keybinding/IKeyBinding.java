@@ -1,7 +1,5 @@
-package committee.nova.mkb.mixin;
+package committee.nova.mkb.keybinding;
 
-import committee.nova.mkb.keybinding.IKeyConflictContext;
-import committee.nova.mkb.keybinding.KeyModifier;
 import net.minecraft.client.settings.KeyBinding;
 
 public interface IKeyBinding {
