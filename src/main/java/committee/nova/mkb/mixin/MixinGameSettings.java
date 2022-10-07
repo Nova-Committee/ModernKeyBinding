@@ -94,15 +94,14 @@ public abstract class MixinGameSettings {
     @Inject(method = "loadOptions", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/audio/SoundCategory;values()[Lnet/minecraft/client/audio/SoundCategory;"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void onLoadOptions(CallbackInfo ci, BufferedReader bufferedreader, String s, String[] aString, KeyBinding[] aKeybinding, int i) {
         for (int j = 0; j < i; ++j) {
-            KeyBinding keybind = aKeybinding[j];
+            final KeyBinding keybind = aKeybinding[j];
 
             if (aString[0].equals("key_" + keybind.getKeyDescription())) {
                 final String s2 = aString[1];
                 final IKeyBinding mixined = (IKeyBinding) keybind;
                 try {
-                    if (s2.indexOf(':') != -1) {
-                        String[] t = s2.split(":");
-                        mixined.setKeyModifierAndCode(KeyModifier.valueFromString(t[1]), Integer.parseInt(t[0]));
+                    if (aString.length > 2) {
+                        mixined.setKeyModifierAndCode(KeyModifier.valueFromString(aString[2]), Integer.parseInt(s2));
                     } else mixined.setKeyModifierAndCode(KeyModifier.NONE, Integer.parseInt(s2));
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -13,4 +13,7 @@ public interface AccessorKeyBinding {
     static List<KeyBinding> getKeybindArray() {
         throw new AssertionError();
     }
+
+    @Accessor
+    void setPressed(boolean pressed);
 }

@@ -54,11 +54,7 @@ public class KeyBindingMap {
     public void addKey(int keyCode, KeyBinding keyBinding) {
         KeyModifier keyModifier = ((IKeyBinding) keyBinding).getKeyModifier();
         HashMap<Integer, Collection<KeyBinding>> bindingsMap = map.get(keyModifier);
-        Collection<KeyBinding> bindingsForKey = bindingsMap.get(keyCode);
-        if (bindingsForKey == null) {
-            bindingsForKey = new ArrayList<>();
-            bindingsMap.put(keyCode, bindingsForKey);
-        }
+        Collection<KeyBinding> bindingsForKey = bindingsMap.computeIfAbsent(keyCode, k -> new ArrayList<>());
         bindingsForKey.add(keyBinding);
     }
 

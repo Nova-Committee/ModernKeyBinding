@@ -43,6 +43,13 @@ public abstract class MixinKeyBinding implements IKeyBinding {
     @Shadow
     @Final
     private int keyCodeDefault;
+
+    @Shadow
+    public abstract int getKeyCodeDefault();
+
+    @Shadow
+    public abstract int getKeyCode();
+
     //Backporting missing starts:
     private static final KeyBindingMap newHash = new KeyBindingMap();
     KeyModifier keyModifierDefault;
@@ -116,12 +123,12 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 
     @Override
     public void setToDefault() {
-        setKeyModifierAndCode(keyModifierDefault, keyCodeDefault);
+        setKeyModifierAndCode(getKeyModifierDefault(), getKeyCodeDefault());
     }
 
     @Override
     public boolean isSetToDefaultValue() {
-        return keyCode == keyCodeDefault && keyModifier == keyModifierDefault;
+        return getKeyCode() == getKeyCodeDefault() && getKeyModifier() == getKeyModifierDefault();
     }
 
     @Override
@@ -132,7 +139,7 @@ public abstract class MixinKeyBinding implements IKeyBinding {
             final KeyModifier otherKeyModifier = keyBinding.getKeyModifier();
             if (keyModifier.matches(other.getKeyCode()) || otherKeyModifier.matches(keyCode)) return true;
             if (keyCode == other.getKeyCode()) {
-                return keyModifier == otherKeyModifier ||
+                return getKeyModifier() == otherKeyModifier ||
                         // IN_GAME key contexts have a conflict when at least one modifier is NONE.
                         // For example: If you hold shift to crouch, you can still press E to open your inventory. This means that a Shift+E hotkey is in conflict with E.
                         // GUI and other key contexts do not have this limitation.
@@ -166,9 +173,16 @@ public abstract class MixinKeyBinding implements IKeyBinding {
         return newHash.lookupActive(i);
     }
 
-    @Redirect(method = "setKeyBindState", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/IntHashMap;lookup(I)Ljava/lang/Object;"))
-    private static Object redirect$setKeyBindState(IntHashMap m, int i) {
-        return newHash.lookupAll(i);
+    /**
+     * @author Tapio
+     * @reason Not so convenient using other hacks
+     */
+    @Overwrite
+    public static void setKeyBindState(int keyCode, boolean pressed) {
+        if (keyCode == 0) return;
+        for (final KeyBinding binding : newHash.lookupAll(keyCode)) {
+            if (binding != null) ((AccessorKeyBinding) binding).setPressed(pressed);
+        }
     }
 
     /**
