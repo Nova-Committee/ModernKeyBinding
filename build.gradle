@@ -32,6 +32,8 @@ version = "${version}"
 group = "${group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "${jarName}"
 
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }

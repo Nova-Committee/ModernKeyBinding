@@ -114,9 +114,7 @@ public enum KeyModifier {
     public static KeyModifier valueFromString(String stringValue) {
         try {
             return valueOf(stringValue);
-        } catch (NullPointerException ignored) {
-            return NONE;
-        } catch (IllegalArgumentException ignored) {
+        } catch (NullPointerException | IllegalArgumentException ignored) {
             return NONE;
         }
     }

@@ -8,7 +8,10 @@
   "client": [
     "AccessorKeyBinding",
     "MixinGameSettings",
+    "MixinGuiContainer",
+    "MixinGuiControls",
     "MixinKeyBinding",
+    "MixinKeyEntry",
     "MixinMinecraft"
   ]
 }

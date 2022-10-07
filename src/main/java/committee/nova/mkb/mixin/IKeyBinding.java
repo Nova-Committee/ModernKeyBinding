@@ -5,6 +5,7 @@ import committee.nova.mkb.keybinding.KeyModifier;
 import net.minecraft.client.settings.KeyBinding;
 
 public interface IKeyBinding {
+    // Should have more mixins?
     boolean isActiveAndMatches(int keyCode);
 
     void setKeyConflictContext(IKeyConflictContext keyConflictContext);
