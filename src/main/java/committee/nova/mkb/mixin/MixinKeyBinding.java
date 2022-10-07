@@ -19,23 +19,12 @@ import java.util.Set;
 @Mixin(KeyBinding.class)
 public abstract class MixinKeyBinding implements IKeyBinding {
     @Shadow
-    public abstract int getKeyCode();
-
-    @Shadow
     private int keyCode;
-
-    @Shadow
-    public abstract int getKeyCodeDefault();
 
     @Mutable
     @Shadow
     @Final
     private String keyDescription;
-
-    @Mutable
-    @Shadow
-    @Final
-    private int keyCodeDefault;
 
     @Mutable
     @Shadow
@@ -53,11 +42,15 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 
     @Shadow
     private boolean pressed;
+    @Mutable
+    @Shadow
+    @Final
+    private int keyCodeDefault;
     //Backporting missing starts:
     private static final KeyBindingMap newHash = new KeyBindingMap();
-    KeyModifier keyModifierDefault = KeyModifier.NONE;
-    KeyModifier keyModifier = KeyModifier.NONE;
-    IKeyConflictContext keyConflictContext = KeyConflictContext.UNIVERSAL;
+    KeyModifier keyModifierDefault;
+    KeyModifier keyModifier;
+    IKeyConflictContext keyConflictContext;
 
     /**
      * Convenience constructor for creating KeyBindings with keyConflictContext set.
@@ -89,7 +82,7 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 
     @Override
     public boolean isActiveAndMatches(int keyCode) {
-        return keyCode != 0 && keyCode == this.getKeyCode() && getKeyConflictContext().isActive() && getKeyModifier().isActive(getKeyConflictContext());
+        return keyCode != 0 && keyCode == this.keyCode && getKeyConflictContext().isActive() && getKeyModifier().isActive(getKeyConflictContext());
     }
 
     @Override
@@ -126,12 +119,12 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 
     @Override
     public void setToDefault() {
-        setKeyModifierAndCode(getKeyModifierDefault(), getKeyCodeDefault());
+        setKeyModifierAndCode(keyModifierDefault, keyCodeDefault);
     }
 
     @Override
     public boolean isSetToDefaultValue() {
-        return getKeyCode() == getKeyCodeDefault() && getKeyModifier() == getKeyModifierDefault();
+        return keyCode == keyCodeDefault && keyModifier == keyModifierDefault;
     }
 
     @Override
@@ -140,8 +133,8 @@ public abstract class MixinKeyBinding implements IKeyBinding {
         if (getKeyConflictContext().conflicts(keyBinding.getKeyConflictContext()) || keyBinding.getKeyConflictContext().conflicts(getKeyConflictContext())) {
             final KeyModifier keyModifier = getKeyModifier();
             final KeyModifier otherKeyModifier = keyBinding.getKeyModifier();
-            if (keyModifier.matches(other.getKeyCode()) || otherKeyModifier.matches(getKeyCode())) return true;
-            if (getKeyCode() == other.getKeyCode()) {
+            if (keyModifier.matches(other.getKeyCode()) || otherKeyModifier.matches(keyCode)) return true;
+            if (keyCode == other.getKeyCode()) {
                 return keyModifier == otherKeyModifier ||
                         // IN_GAME key contexts have a conflict when at least one modifier is NONE.
                         // For example: If you hold shift to crouch, you can still press E to open your inventory. This means that a Shift+E hotkey is in conflict with E.
@@ -157,12 +150,12 @@ public abstract class MixinKeyBinding implements IKeyBinding {
     public boolean hasKeyCodeModifierConflict(KeyBinding other) {
         final IKeyBinding keyBinding = (IKeyBinding) other;
         return (getKeyConflictContext().conflicts(keyBinding.getKeyConflictContext()) || keyBinding.getKeyConflictContext().conflicts(getKeyConflictContext()))
-                && (getKeyModifier().matches(other.getKeyCode()) || keyBinding.getKeyModifier().matches(getKeyCode()));
+                && (getKeyModifier().matches(other.getKeyCode()) || keyBinding.getKeyModifier().matches(keyCode));
     }
 
     @Override
     public String getDisplayName() {
-        return getKeyModifier().getLocalizedComboName(getKeyCode());
+        return getKeyModifier().getLocalizedComboName(keyCode);
     }
 
     //Modifying existing starts:

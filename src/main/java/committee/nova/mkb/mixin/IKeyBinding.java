@@ -27,6 +27,4 @@ public interface IKeyBinding {
     boolean hasKeyCodeModifierConflict(KeyBinding other);
 
     String getDisplayName();
-
-    void updateKeyBindState();
 }
