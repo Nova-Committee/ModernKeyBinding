@@ -69,9 +69,7 @@ public class KeyBindingMap {
         final Collection<KeyBinding> bindingsForKey = bindingsMap.lookup(keyCode);
         if (bindingsForKey != null) {
             bindingsForKey.remove(keyBinding);
-            if (bindingsForKey.isEmpty()) {
-                bindingsMap.removeObject(keyCode);
-            }
+            if (bindingsForKey.isEmpty()) bindingsMap.removeObject(keyCode);
         }
     }
 

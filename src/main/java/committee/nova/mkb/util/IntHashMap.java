@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Objects;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "unused"})
 public class IntHashMap<V> {
     private transient Entry<V>[] slots = new Entry[16];
     private transient int count;

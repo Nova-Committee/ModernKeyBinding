@@ -60,34 +60,6 @@ public abstract class MixinKeyBinding implements IKeyBinding {
     KeyModifier keyModifier;
     IKeyConflictContext keyConflictContext;
 
-    /**
-     * Convenience constructor for creating KeyBindings with keyConflictContext set.
-     */
-    public MixinKeyBinding(String description, IKeyConflictContext keyConflictContext, int keyCode, String category) {
-        this(description, keyConflictContext, KeyModifier.NONE, keyCode, category);
-    }
-
-    /**
-     * Convenience constructor for creating KeyBindings with keyConflictContext and keyModifier set.
-     */
-    public MixinKeyBinding(String description, IKeyConflictContext keyConflictContext, KeyModifier keyModifier, int keyCode, String category) {
-        this.keyDescription = description;
-        this.keyCode = keyCode;
-        this.keyCodeDefault = keyCode;
-        this.keyCategory = category;
-        this.keyConflictContext = keyConflictContext;
-        this.keyModifier = keyModifier;
-        this.keyModifierDefault = keyModifier;
-        if (this.keyModifier.matches(keyCode)) {
-            this.keyModifier = KeyModifier.NONE;
-        }
-        //todo: is this correct?
-        keybindArray.add((KeyBinding) (Object) this);
-        //todo
-        keybindSet.add(category);
-        newHash.addKey(keyCode, (KeyBinding) (Object) this);
-    }
-
     @Override
     public boolean isActiveAndMatches(int keyCode) {
         return keyCode != 0 && keyCode == this.keyCode && getKeyConflictContext().isActive() && getKeyModifier().isActive(getKeyConflictContext());
@@ -123,6 +95,13 @@ public abstract class MixinKeyBinding implements IKeyBinding {
         this.keyModifier = keyModifier;
         newHash.addKey(keyCode, (KeyBinding) (Object) this);
         //todo
+    }
+
+    @Override
+    public void setInitialKeyModifierAndCode(KeyModifier keyModifier, int keyCode) {
+        setKeyModifierAndCode(keyModifier, keyCode);
+        this.keyModifierDefault = keyModifier;
+        this.keyCodeDefault = keyCode;
     }
 
     @Override

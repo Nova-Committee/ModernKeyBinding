@@ -17,6 +17,8 @@ public interface IKeyBinding {
 
     void setKeyModifierAndCode(KeyModifier keyModifier, int keyCode);
 
+    void setInitialKeyModifierAndCode(KeyModifier keyModifier, int keyCode);
+
     void setToDefault();
 
     boolean isSetToDefaultValue();
