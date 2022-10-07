@@ -1,9 +1,10 @@
-package committee.nova.mkb.keybinding;
+package committee.nova.mkb.api;
 
+import committee.nova.mkb.keybinding.IKeyConflictContext;
+import committee.nova.mkb.keybinding.KeyModifier;
 import net.minecraft.client.settings.KeyBinding;
 
 public interface IKeyBinding {
-    // Should have more mixins?
     boolean isActiveAndMatches(int keyCode);
 
     void setKeyConflictContext(IKeyConflictContext keyConflictContext);

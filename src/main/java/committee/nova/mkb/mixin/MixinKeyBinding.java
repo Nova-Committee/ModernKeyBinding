@@ -1,6 +1,10 @@
 package committee.nova.mkb.mixin;
 
-import committee.nova.mkb.keybinding.*;
+import committee.nova.mkb.api.IKeyBinding;
+import committee.nova.mkb.keybinding.IKeyConflictContext;
+import committee.nova.mkb.keybinding.KeyBindingMap;
+import committee.nova.mkb.keybinding.KeyConflictContext;
+import committee.nova.mkb.keybinding.KeyModifier;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.IntHashMap;
 import org.spongepowered.asm.mixin.*;

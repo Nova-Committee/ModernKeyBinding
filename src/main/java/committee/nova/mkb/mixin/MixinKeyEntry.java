@@ -1,6 +1,6 @@
 package committee.nova.mkb.mixin;
 
-import committee.nova.mkb.keybinding.IKeyBinding;
+import committee.nova.mkb.api.IKeyBinding;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiKeyBindingList;
 import net.minecraft.client.renderer.Tessellator;
@@ -32,7 +32,7 @@ public abstract class MixinKeyEntry {
         btnReset.enabled = !((IKeyBinding) field_148282_b).isSetToDefaultValue();
     }
 
-    @Inject(method = "drawEntry", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiButton;drawButton(Lnet/minecraft/client/Minecraft;II)V"))
+    @Inject(method = "drawEntry", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiButton;drawButton(Lnet/minecraft/client/Minecraft;II)V", ordinal = 1))
     public void onDrawEntry2(int p_148279_1_, int p_148279_2_, int p_148279_3_, int p_148279_4_, int p_148279_5_, Tessellator p_148279_6_, int p_148279_7_, int p_148279_8_, boolean p_148279_9_, CallbackInfo ci) {
         btnChangeKeyBinding.displayString = ((IKeyBinding) field_148282_b).getDisplayName();
     }

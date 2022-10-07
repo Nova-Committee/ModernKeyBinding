@@ -1,6 +1,6 @@
 package committee.nova.mkb.mixin;
 
-import committee.nova.mkb.keybinding.IKeyBinding;
+import committee.nova.mkb.api.IKeyBinding;
 import committee.nova.mkb.keybinding.KeyModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

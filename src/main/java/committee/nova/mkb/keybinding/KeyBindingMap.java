@@ -1,5 +1,6 @@
 package committee.nova.mkb.keybinding;
 
+import committee.nova.mkb.api.IKeyBinding;
 import committee.nova.mkb.util.IntHashMap;
 import net.minecraft.client.settings.KeyBinding;
 
