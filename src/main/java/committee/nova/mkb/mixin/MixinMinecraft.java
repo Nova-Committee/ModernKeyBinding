@@ -21,7 +21,7 @@ public abstract class MixinMinecraft {
     public GameSettings gameSettings;
 
     @Inject(method = "setIngameFocus", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/MouseHelper;grabMouseCursor()V"))
-    public void onSetIngameFocus(CallbackInfo ci) {
+    public void inject$setIngameFocus(CallbackInfo ci) {
         if (!isRunningOnMac) Utilities.updateKeyBindState();
     }
 }

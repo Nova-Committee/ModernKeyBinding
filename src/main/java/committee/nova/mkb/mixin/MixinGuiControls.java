@@ -31,13 +31,13 @@ public abstract class MixinGuiControls extends GuiScreen {
     public long field_152177_g;
 
     @Inject(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/GameSettings;setOptionKeyBinding(Lnet/minecraft/client/settings/KeyBinding;I)V"))
-    public void onMouseClicked(int mouseX, int mouseY, int mouseButton, CallbackInfo ci) {
+    public void inject$mouseClicked(int mouseX, int mouseY, int mouseButton, CallbackInfo ci) {
         ((IKeyBinding) buttonId).setKeyModifierAndCode(KeyModifier.getActiveModifier(), -100 + mouseButton);
     }
 
     /**
      * @author Tapio
-     * @reason Don't want to write 2 injects
+     * @reason Set keybinding with modifier
      */
     @Overwrite
     public void keyTyped(char typedChar, int keyCode) {
@@ -66,17 +66,17 @@ public abstract class MixinGuiControls extends GuiScreen {
     }
 
     @Redirect(method = "actionPerformed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyCode(I)V"))
-    public void onActionPerformed(KeyBinding instance, int ignored) {
+    public void inject$actionPerformed(KeyBinding instance, int ignored) {
         ((IKeyBinding) instance).setToDefault();
     }
 
     @Redirect(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;getKeyCodeDefault()I"))
-    public int trapDrawScreen(KeyBinding instance) {
+    public int redirect$drawScreen$trap(KeyBinding instance) {
         return instance.getKeyCode();
     }
 
     @Inject(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiScreen;drawScreen(IIF)V"))
-    public void onDrawScreen(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
+    public void inject$drawScreen(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
         final KeyBinding[] keyBindings = options.keyBindings;
         final int x = keyBindings.length;
         boolean flag1 = false;

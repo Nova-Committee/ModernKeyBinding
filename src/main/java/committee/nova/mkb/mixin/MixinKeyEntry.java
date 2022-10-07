@@ -34,12 +34,12 @@ public abstract class MixinKeyEntry {
     private GuiKeyBindingList outer;
 
     @Inject(method = "drawEntry", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiButton;drawButton(Lnet/minecraft/client/Minecraft;II)V", ordinal = 0))
-    public void onDrawEntry2(int p_148279_1_, int p_148279_2_, int p_148279_3_, int p_148279_4_, int p_148279_5_, Tessellator p_148279_6_, int p_148279_7_, int p_148279_8_, boolean p_148279_9_, CallbackInfo ci) {
+    public void inject$drawEntry$1(int p_148279_1_, int p_148279_2_, int p_148279_3_, int p_148279_4_, int p_148279_5_, Tessellator p_148279_6_, int p_148279_7_, int p_148279_8_, boolean p_148279_9_, CallbackInfo ci) {
         btnReset.enabled = !((IKeyBinding) field_148282_b).isSetToDefaultValue();
     }
 
     @Redirect(method = "drawEntry", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiButton;drawButton(Lnet/minecraft/client/Minecraft;II)V", ordinal = 1))
-    public void onDrawEntry3(GuiButton button, Minecraft mc, int i1, int i2) {
+    public void inject$drawEntry$2(GuiButton button, Minecraft mc, int i1, int i2) {
         btnChangeKeyBinding.displayString = ((IKeyBinding) field_148282_b).getDisplayName();
         boolean conflicted = false;
         boolean keyCodeModifierConflict = true; // less severe form of conflict, like SHIFT conflicting with SHIFT+G
@@ -64,7 +64,7 @@ public abstract class MixinKeyEntry {
     }
 
     @Inject(method = "mousePressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/GameSettings;setOptionKeyBinding(Lnet/minecraft/client/settings/KeyBinding;I)V"))
-    public void onMousePressed(int p_148278_1_, int p_148278_2_, int p_148278_3_, int p_148278_4_, int p_148278_5_, int p_148278_6_, CallbackInfoReturnable<Boolean> cir) {
+    public void inject$mousePressed(int p_148278_1_, int p_148278_2_, int p_148278_3_, int p_148278_4_, int p_148278_5_, int p_148278_6_, CallbackInfoReturnable<Boolean> cir) {
         ((IKeyBinding) field_148282_b).setToDefault();
     }
 }

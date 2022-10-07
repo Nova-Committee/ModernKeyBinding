@@ -1,5 +1,7 @@
 package committee.nova.mkb.util;
 
+import committee.nova.mkb.api.IKeyBinding;
+import committee.nova.mkb.keybinding.IKeyConflictContext;
 import committee.nova.mkb.mixin.AccessorKeyBinding;
 import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.input.Keyboard;
@@ -21,11 +23,9 @@ public class Utilities {
         }
     }
 
-    //public static int getFirstOn(String origin, char target) {
-    //    final int length = origin.length();
-    //    for (int i = 0; i < length; i++) {
-    //        if (target == origin.charAt(i)) return i;
-    //    }
-    //    return -1;
-    //}
+    public static boolean isActiveIgnoreKeyCode(KeyBinding binding) {
+        final IKeyBinding mixined = (IKeyBinding) binding;
+        final IKeyConflictContext ctx = mixined.getKeyConflictContext();
+        return ctx.isActive() && mixined.getKeyModifier().isActive(ctx);
+    }
 }

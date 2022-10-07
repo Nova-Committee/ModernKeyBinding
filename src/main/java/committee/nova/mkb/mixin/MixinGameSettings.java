@@ -63,22 +63,22 @@ public abstract class MixinGameSettings {
     public KeyBinding keyBindSmoothCamera;
 
     @Inject(method = "<init>()V", at = @At("RETURN"))
-    public void onInit1(CallbackInfo ci) {
+    public void inject$init$1(CallbackInfo ci) {
         setForgeKeyBindProperties();
     }
 
     @Inject(method = "<init>(Lnet/minecraft/client/Minecraft;Ljava/io/File;)V", at = @At("RETURN"))
-    public void onInit2(Minecraft mc, File dir, CallbackInfo ci) {
+    public void inject$init$2(Minecraft mc, File dir, CallbackInfo ci) {
         setForgeKeyBindProperties();
     }
 
     @Redirect(method = "saveOptions", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V", ordinal = 55))
-    public void trapSaveOptions(PrintWriter instance, String s) {
+    public void redirect$saveOptions$trap(PrintWriter instance, String s) {
         // Do nothing
     }
 
     @Inject(method = "saveOptions", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/audio/SoundCategory;values()[Lnet/minecraft/client/audio/SoundCategory;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void onSaveOptions(CallbackInfo ci, PrintWriter printwriter, KeyBinding[] keyBindings) {
+    public void inject$saveOptions(CallbackInfo ci, PrintWriter printwriter, KeyBinding[] keyBindings) {
         for (final KeyBinding binding : keyBindings) {
             final String x = "key_" + binding.getKeyDescription() + ":" + binding.getKeyCode();
             final IKeyBinding mixined = (IKeyBinding) binding;
@@ -87,12 +87,12 @@ public abstract class MixinGameSettings {
     }
 
     @Redirect(method = "loadOptions", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyCode(I)V"))
-    public void trapLoadOptions(KeyBinding instance, int p_151462_1_) {
+    public void redirect$loadOptions$trap(KeyBinding instance, int p_151462_1_) {
         // Do nothing
     }
 
     @Inject(method = "loadOptions", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/audio/SoundCategory;values()[Lnet/minecraft/client/audio/SoundCategory;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void onLoadOptions(CallbackInfo ci, BufferedReader bufferedreader, String s, String[] aString, KeyBinding[] aKeybinding, int i) {
+    public void inject$loadOptions(CallbackInfo ci, BufferedReader bufferedreader, String s, String[] aString, KeyBinding[] aKeybinding, int i) {
         for (int j = 0; j < i; ++j) {
             final KeyBinding keybind = aKeybinding[j];
 

@@ -168,7 +168,7 @@ public abstract class MixinKeyBinding implements IKeyBinding {
 
     //Modifying existing starts:
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void onInit(String description, int keyCode, String category, CallbackInfo ci) {
+    public void inject$init(String description, int keyCode, String category, CallbackInfo ci) {
         newHash.addKey(keyCode, (KeyBinding) (Object) this);
     }
 
@@ -200,7 +200,7 @@ public abstract class MixinKeyBinding implements IKeyBinding {
     }
 
     @Inject(method = "getIsKeyPressed", at = @At("RETURN"), cancellable = true)
-    public void onIsKeyPressed(CallbackInfoReturnable<Boolean> cir) {
+    public void inject$isKeyPressed(CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(this.pressed && getKeyConflictContext().isActive() && getKeyModifier().isActive(getKeyConflictContext()));
     }
 }
