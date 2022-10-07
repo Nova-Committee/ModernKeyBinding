@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.7.11",
   "package": "committee.nova.mkb.mixin",
-  "refmap": "mixins.examplemod.refmap.json",
+  "refmap": "mixins.mkb.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "client": [
