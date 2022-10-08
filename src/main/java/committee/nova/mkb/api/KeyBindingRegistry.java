@@ -9,5 +9,5 @@ public interface KeyBindingRegistry {
 
     KeyBinding createKeyBinding(String description, IKeyConflictContext ctx, KeyModifier modifier, int keyCode, String category);
 
-    void registerKeyBinding(String description, IKeyConflictContext ctx, KeyModifier modifier, int keyCode, String category);
+    KeyBinding registerKeyBinding(String description, IKeyConflictContext ctx, KeyModifier modifier, int keyCode, String category);
 }

@@ -17,7 +17,9 @@ class KeyBindingRegistryImpl implements KeyBindingRegistry {
     }
 
     @Override
-    public void registerKeyBinding(String description, IKeyConflictContext ctx, KeyModifier modifier, int keyCode, String category) {
-        ClientRegistry.registerKeyBinding(createKeyBinding(description, ctx, modifier, keyCode, category));
+    public KeyBinding registerKeyBinding(String description, IKeyConflictContext ctx, KeyModifier modifier, int keyCode, String category) {
+        final KeyBinding keyBinding = createKeyBinding(description, ctx, modifier, keyCode, category);
+        ClientRegistry.registerKeyBinding(keyBinding);
+        return keyBinding;
     }
 }
