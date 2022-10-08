@@ -43,7 +43,7 @@ public abstract class MixinGuiControls extends GuiScreen {
     public void keyTyped(char typedChar, int keyCode) {
         if (buttonId == null) {
             if (keyCode == 1) {
-                this.mc.displayGuiScreen((GuiScreen) null);
+                this.mc.displayGuiScreen(null);
                 this.mc.setIngameFocus();
             }
             return;
@@ -66,7 +66,7 @@ public abstract class MixinGuiControls extends GuiScreen {
     }
 
     @Redirect(method = "actionPerformed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyCode(I)V"))
-    public void inject$actionPerformed(KeyBinding instance, int ignored) {
+    public void redirect$actionPerformed(KeyBinding instance, int ignored) {
         ((IKeyBinding) instance).setToDefault();
     }
 

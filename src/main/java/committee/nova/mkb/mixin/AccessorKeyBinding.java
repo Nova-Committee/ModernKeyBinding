@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.List;
 
 @Mixin(KeyBinding.class)
-//Could this be abstract class?
 public interface AccessorKeyBinding {
     @Accessor("keybindArray")
     static List<KeyBinding> getKeybindArray() {
