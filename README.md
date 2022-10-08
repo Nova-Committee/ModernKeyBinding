@@ -2,7 +2,7 @@
 
 ### Import as a gradle dependency
 
-Check the lastest version on [JitPack](https://jitpack.io/#Nova-Committee/ModernKeyBinding "JitPack").
+Check the latest version on [JitPack](https://jitpack.io/#Nova-Committee/ModernKeyBinding "JitPack").
 
 [![](https://jitpack.io/v/Nova-Committee/ModernKeyBinding.svg)](https://jitpack.io/#Nova-Committee/ModernKeyBinding)
 ```groovy
