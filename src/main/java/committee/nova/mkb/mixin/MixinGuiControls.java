@@ -6,6 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiControls;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiYesNo;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import org.spongepowered.asm.mixin.Mixin;
@@ -65,9 +67,20 @@ public abstract class MixinGuiControls extends GuiScreen {
         KeyBinding.resetKeyBindingArrayAndHash();
     }
 
-    @Redirect(method = "actionPerformed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyCode(I)V"))
-    public void redirect$actionPerformed(KeyBinding instance, int ignored) {
-        ((IKeyBinding) instance).setToDefault();
+    @Inject(method = "actionPerformed", at = @At("HEAD"), cancellable = true)
+    public void inject$actionPerformed(GuiButton button, CallbackInfo ci) {
+        if (button.id != 201) return;
+        final GuiScreen current = mc.currentScreen;
+        final GuiYesNo confirm = new GuiYesNo((yes, key) -> {
+            if (yes) {
+                KeyBinding[] keyBindings = this.mc.gameSettings.keyBindings;
+                for (final KeyBinding keyBinding : keyBindings) ((IKeyBinding) keyBinding).setToDefault();
+                KeyBinding.resetKeyBindingArrayAndHash();
+            }
+            mc.displayGuiScreen(current);
+        }, I18n.format("menu.reset"), "", 13468);
+        mc.displayGuiScreen(confirm);
+        ci.cancel();
     }
 
     @Redirect(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;getKeyCodeDefault()I"))
