@@ -15,7 +15,7 @@ repositories {
 ```groovy
 dependencies {
     //...
-    implementation 'com.github.Nova-Committee:ModernKeyBinding:Forge-1.7.10-1.1.0'
+    implementation 'com.github.Nova-Committee:ModernKeyBinding:Forge-1.7.10-1.2.0'
 }
 ```
 
