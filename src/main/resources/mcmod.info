@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "mkb",
+    "name": "Modern Keybinding",
+    "description": "Backport of forge's changes on keybindings",
+    "version": "1.0.0",
+    "mcversion": "1.8.9",
+    "url": "https://github.com/Nova-Committee/ModernKeyBinding/",
+    "updateUrl": "",
+    "authorList": [
+      "Tapio"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

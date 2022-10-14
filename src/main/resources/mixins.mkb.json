@@ -1,0 +1,17 @@
+{
+  "package": "committee.nova.mkb.mixin",
+  "refmap": "mixins.mkb.refmap.json",
+  "minVersion": "0.7",
+  "required": true,
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "AccessorGuiBindingList",
+    "AccessorKeyBinding",
+    "MixinGameSettings",
+    "MixinGuiContainer",
+    "MixinGuiControls",
+    "MixinKeyBinding",
+    "MixinKeyEntry",
+    "MixinMinecraft"
+  ]
+}
