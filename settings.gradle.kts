@@ -19,4 +19,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "mkb"
+rootProject.name = "ModernKeyBindingFg189"

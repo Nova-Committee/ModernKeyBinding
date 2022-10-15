@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "committee.nova.mkb"
-version = "1.0.0"
+version = project.property("version") as String
 val modId: String = project.property("modId") as String
 
 // Toolchains:
@@ -64,8 +64,8 @@ dependencies {
     shadowImpl("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
         isTransitive = false
     }
-    annotationProcessor("org.spongepowered:mixin:0.8.5")
-    testAnnotationProcessor("org.spongepowered:mixin:0.8.5")
+    //annotationProcessor("org.spongepowered:mixin:0.8.5")
+    //testAnnotationProcessor("org.spongepowered:mixin:0.8.5")
     // If you don't want to log in with your real minecraft account, remove this line
     //runtimeOnly("me.djtheredstoner:DevAuth-forge-legacy:1.1.0")
 
@@ -78,7 +78,7 @@ tasks.withType(JavaCompile::class) {
 }
 
 tasks.withType(Jar::class) {
-    archiveBaseName.set(modId)
+    archiveBaseName.set("ModernKeyBinding-Forge-1.8.9")
     manifest.attributes.run {
         this["FMLCorePluginContainsFMLMod"] = "true"
         this["ForceLoadAsMod"] = "true"
@@ -91,7 +91,11 @@ tasks.withType(Jar::class) {
 
 
 val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
-    archiveClassifier.set("all")
+    archiveBaseName.set("ModernKeyBinding-Forge-1.8.9")
+    if (project.hasProperty("nomixin")) {
+        archiveClassifier.set("mixinless")
+        return@named
+    }
     from(tasks.shadowJar)
     input.set(tasks.shadowJar.get().archiveFile)
 }
@@ -107,6 +111,13 @@ tasks.shadowJar {
 
     // If you want to include other dependencies and shadow them, you can relocate them in here
     fun relocate(name: String) = relocate(name, "com.${modId}.deps.$name")
+}
+
+tasks.withType<ProcessResources> {
+    inputs.property("version", project.version)
+    filesMatching("mcmod.info") {
+        expand(mapOf("version" to project.version))
+    }
 }
 
 tasks.assemble.get().dependsOn(tasks.remapJar)
