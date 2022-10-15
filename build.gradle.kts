@@ -101,7 +101,7 @@ val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
 }
 
 tasks.shadowJar {
-    archiveClassifier.set("all-dev")
+    archiveClassifier.set("dev")
     configurations = listOf(shadowImpl)
     doLast {
         configurations.forEach {
