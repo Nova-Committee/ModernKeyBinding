@@ -1,16 +1,15 @@
 package committee.nova.mkb.mixin;
 
 import committee.nova.mkb.api.IKeyBinding;
+import committee.nova.mkb.config.Config;
 import committee.nova.mkb.keybinding.IKeyConflictContext;
 import committee.nova.mkb.keybinding.KeyBindingMap;
 import committee.nova.mkb.keybinding.KeyConflictContext;
 import committee.nova.mkb.keybinding.KeyModifier;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.IntHashMap;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -54,6 +53,8 @@ public abstract class MixinKeyBinding implements IKeyBinding {
     @Shadow
     public abstract int getKeyCode();
 
+    @Shadow
+    private int pressTime;
     //Backporting missing starts:
     private static final KeyBindingMap newHash = new KeyBindingMap();
     KeyModifier keyModifierDefault;
@@ -110,6 +111,11 @@ public abstract class MixinKeyBinding implements IKeyBinding {
     }
 
     @Override
+    public void press() {
+        ++pressTime;
+    }
+
+    @Override
     public boolean isSetToDefaultValue() {
         return getKeyCode() == getKeyCodeDefault() && getKeyModifier() == getKeyModifierDefault();
     }
@@ -151,9 +157,16 @@ public abstract class MixinKeyBinding implements IKeyBinding {
         newHash.addKey(keyCode, (KeyBinding) (Object) this);
     }
 
-    @Redirect(method = "onTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/IntHashMap;lookup(I)Ljava/lang/Object;"))
-    private static Object redirect$onTick(IntHashMap m, int i) {
-        return newHash.lookupActive(i);
+    @Inject(method = "onTick", at = @At("HEAD"), cancellable = true)
+    private static void onTick(int keyCode, CallbackInfo ci) {
+        ci.cancel();
+        if (keyCode == 0) return;
+        if (Config.nonConflictKeys()) {
+            newHash.lookupActives(keyCode).forEach(k -> ((IKeyBinding) k).press());
+            return;
+        }
+        final KeyBinding keybinding = newHash.lookupActive(keyCode);
+        if (keybinding != null) ((IKeyBinding) keybinding).press();
     }
 
     /**

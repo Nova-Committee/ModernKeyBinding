@@ -21,6 +21,8 @@ public interface IKeyBinding {
 
     void setToDefault();
 
+    void press();
+
     boolean isSetToDefaultValue();
 
     boolean conflicts(KeyBinding other);

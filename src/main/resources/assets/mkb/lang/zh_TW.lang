@@ -1,1 +1,3 @@
 menu.reset=重置所有按鍵綁定？
+
+cfg.mkb.nonConflictKeys=全鍵無衝
