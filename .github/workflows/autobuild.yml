@@ -21,5 +21,5 @@ jobs:
         run: ./gradlew build -PuseCommitHashInVersion -Pnomixin
       - uses: actions/upload-artifact@v2
         with:
-          name: Package
+          name: ModernKeyBinding-1.7.10
           path: build/libs
