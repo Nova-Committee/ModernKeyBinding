@@ -5,10 +5,7 @@ import committee.nova.mkb.util.IntHashMap;
 import net.minecraft.client.settings.KeyBinding;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.List;
+import java.util.*;
 
 public class KeyBindingMap {
     private static final EnumMap<KeyModifier, IntHashMap<Collection<KeyBinding>>> map = new EnumMap<>(KeyModifier.class);
@@ -27,17 +24,31 @@ public class KeyBindingMap {
         return getBinding(keyCode, KeyModifier.NONE);
     }
 
+    public Set<KeyBinding> lookupActives(int keyCode) {
+        final KeyModifier activeModifier = KeyModifier.getActiveModifier();
+        if (!activeModifier.matches(keyCode)) {
+            final Set<KeyBinding> bindings = getBindings(keyCode, activeModifier);
+            if (!bindings.isEmpty()) return bindings;
+        }
+        return getBindings(keyCode, KeyModifier.NONE);
+    }
+
     @Nullable
     private KeyBinding getBinding(int keyCode, KeyModifier keyModifier) {
         final Collection<KeyBinding> bindings = map.get(keyModifier).lookup(keyCode);
-        if (bindings != null) {
-            for (final KeyBinding binding : bindings) {
-                if (((IKeyBinding) binding).isActiveAndMatches(keyCode)) {
-                    return binding;
-                }
-            }
-        }
+        if (bindings == null) return null;
+        for (final KeyBinding binding : bindings)
+            if (((IKeyBinding) binding).isActiveAndMatches(keyCode)) return binding;
         return null;
+    }
+
+    public Set<KeyBinding> getBindings(int keyCode, KeyModifier keyModifier) {
+        final Collection<KeyBinding> bindings = map.get(keyModifier).lookup(keyCode);
+        final Set<KeyBinding> matched = new HashSet<>();
+        if (bindings == null) return matched;
+        for (final KeyBinding binding : bindings)
+            if (((IKeyBinding) binding).isActiveAndMatches(keyCode)) matched.add(binding);
+        return matched;
     }
 
     public List<KeyBinding> lookupAll(int keyCode) {
