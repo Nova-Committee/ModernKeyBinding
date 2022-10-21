@@ -12,7 +12,8 @@
     "MixinHandledScreen",
     "MixinKeyBinding",
     "MixinKeyEntry",
-    "MixinMinecraftClient"
+    "MixinMinecraftClient",
+    "res.MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1
