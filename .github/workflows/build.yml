@@ -21,12 +21,11 @@ jobs:
         with:
           distribution: "temurin"
           java-version: ${{ matrix.java }}
-
       - name: Grant execute permission
         run: chmod +x ./gradlew
       - name: Build with Gradle
         run: ./gradlew build
       - uses: actions/upload-artifact@v2
-      with:
-        name: ModernKeyBinding-LF-1.7.10
-        path: build/libs
+        with:
+          name: ModernKeyBinding-LF-1.7.10
+          path: build/libs
