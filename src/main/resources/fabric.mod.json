@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "mkb",
+  "version": "${version}",
+  "name": "Modern KeyBinding",
+  "description": "Add key conflict context && key modifier for legacy fabric",
+  "authors": [
+    "Tapio"
+  ],
+  "contact": {
+    "sources": "https://github.com/Nova-Committee/ModernKeyBinding"
+  },
+  "license": "AGPL v3",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "committee.nova.mkb.ModernKeyBinding"
+    ]
+  },
+  "mixins": [
+    "mkb.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.12.0",
+    "minecraft": "1.7.10"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

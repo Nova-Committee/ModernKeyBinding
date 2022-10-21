@@ -1,0 +1,8 @@
+controls.mkb.shift=SHIFT + %s
+controls.mkb.control=CTRL + %s
+controls.mkb.control.mac=CMD + %s
+controls.mkb.alt=ALT + %s
+
+menu.mkb.reset=Reset all keybindings?
+
+cfg.mkb.nonConflictKeys=Non-conflict Keys
