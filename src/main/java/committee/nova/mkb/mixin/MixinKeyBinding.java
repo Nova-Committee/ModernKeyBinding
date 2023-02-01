@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-@Mixin(KeyBinding.class)
+@Mixin(value = KeyBinding.class, priority = 1024)
 public abstract class MixinKeyBinding implements IKeyBinding {
     @Shadow
     private int code;
@@ -152,16 +152,12 @@ public abstract class MixinKeyBinding implements IKeyBinding {
         if (keybinding != null) ((IKeyBinding) keybinding).press();
     }
 
-    /**
-     * @author Tapio
-     * @reason Not so convenient using other hacks
-     */
-    @Overwrite
-    public static void setKeyPressed(int keyCode, boolean pressed) {
+    @Inject(method = "setKeyPressed", at = @At("HEAD"), cancellable = true)
+    private static void inject$setKeyPressed(int keyCode, boolean pressed, CallbackInfo ci) {
         if (keyCode == 0) return;
-        for (final KeyBinding binding : newHash.lookupAll(keyCode)) {
+        ci.cancel();
+        for (final KeyBinding binding : newHash.lookupAll(keyCode))
             if (binding != null) ((AccessorKeyBinding) binding).setPressed(pressed);
-        }
     }
 
     /**
