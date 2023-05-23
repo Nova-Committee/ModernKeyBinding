@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "committee.nova.mkb.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "AccessorControlsListWidget",
+    "AccessorScreen",
+    "AccessorStickyKeyBinding",
+    "MixinControlsOptionsScreen",
+    "MixinGameOptions",
+    "MixinHandledScreen",
+    "MixinKeyBinding",
+    "MixinKeyBindingEntry",
+    "MixinStickyKeyBinding"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
