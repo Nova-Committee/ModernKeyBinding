@@ -12,6 +12,7 @@
     "MixinHandledScreen",
     "MixinKeyBinding",
     "MixinKeyBindingEntry",
+    "MixinKeyboard",
     "MixinStickyKeyBinding"
   ],
   "injectors": {
