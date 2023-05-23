@@ -90,24 +90,6 @@ public abstract class MixinGameOptions {
             ((IKeyBinding) binding).setKeyConflictContext(KeyConflictContext.IN_GAME);
     }
 
-    //@Redirect(method = "write", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V", ordinal = 71))
-    //private void redirect$write(PrintWriter instance, String x) {
-    //    if (!x.startsWith("key_")) return;
-    //    final String[] split = x.substring(4).split(":");
-    //    KeyBinding binding = null;
-    //    try {
-    //        for (final KeyBinding k : keysAll) if (Objects.equals(k.getTranslationKey(), split[0])) {
-    //            binding = k;
-    //            break;
-    //        }
-    //    } catch (Exception e) {
-    //        e.printStackTrace();
-    //    }
-    //    if (binding == null) return;
-    //    final IKeyBinding extended = (IKeyBinding) binding;
-    //    instance.println("key_" + binding.getTranslationKey() + ":" + binding.getBoundKeyTranslationKey() + (extended.getKeyModifier() != KeyModifier.NONE ? ":" + extended.getKeyModifier().name() : ""));
-    //}
-
     @Redirect(method = "write", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V", ordinal = 71))
     private void redirect$write$trap(PrintWriter instance, String x) {
         //Trap
@@ -126,21 +108,4 @@ public abstract class MixinGameOptions {
             e.printStackTrace();
         }
     }
-    //todo: available?
-
-    //@Inject(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/sound/SoundCategory;values()[Lnet/minecraft/sound/SoundCategory;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    //private void inject$load(CallbackInfo ci, NbtCompound nbtCompound, NbtCompound nbtCompound2, Iterator<?> var3, String string, String string2) {
-    //    for (final KeyBinding keyBinding : keysAll){
-    //        if (string.equals("key_" + keyBinding.getTranslationKey())) {
-    //            final IKeyBinding extended = (IKeyBinding) keyBinding;
-    //            if (string2.indexOf(':') != -1) {
-    //                String[] pts = string2.split(":");
-    //                extended.setKeyModifierAndCode(KeyModifier.valueFromString(pts[1]), InputUtil.fromTranslationKey(pts[0]));
-    //            } else
-    //                extended.setKeyModifierAndCode(KeyModifier.NONE, InputUtil.fromTranslationKey(string2));
-    //        }
-    //    }
-    //}
-
-
 }
