@@ -1,0 +1,6 @@
+{
+  "mkb.controlsgui.shift": "SHIFT + %s",
+  "mkb.controlsgui.control": "CTRL + %s",
+  "mkb.controlsgui.control.mac": "CMD + %s",
+  "mkb.controlsgui.alt": "ALT + %s"
+}
