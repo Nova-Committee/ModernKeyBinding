@@ -1,5 +1,6 @@
 package committee.nova.mkb.mixin;
 
+import committee.nova.mkb.ModernKeyBinding;
 import committee.nova.mkb.api.IKeyBinding;
 import committee.nova.mkb.api.IKeyConflictContext;
 import committee.nova.mkb.keybinding.KeyBindingMap;
@@ -88,6 +89,10 @@ public abstract class MixinKeyBinding implements IKeyBinding {
     @Inject(method = "onKeyPressed", at = @At("HEAD"), cancellable = true)
     private static void inject$onKeyPressed(InputUtil.Key key, CallbackInfo ci) {
         ci.cancel();
+        if (ModernKeyBinding.nonConflictKeys()) {
+            MAP.lookupActives(key).forEach(k -> ((IKeyBinding) k).press());
+            return;
+        }
         KeyBinding keyBinding = MAP.lookupActive(key);
         if (keyBinding == null) return;
         ((IKeyBinding) keyBinding).press();
@@ -96,6 +101,10 @@ public abstract class MixinKeyBinding implements IKeyBinding {
     @Inject(method = "setKeyPressed", at = @At("HEAD"), cancellable = true)
     private static void inject$setKeyPressed(InputUtil.Key key, boolean pressed, CallbackInfo ci) {
         ci.cancel();
+        if (ModernKeyBinding.nonConflictKeys()) {
+            MAP.lookupActives(key).forEach(k -> k.setPressed(pressed));
+            return;
+        }
         KeyBinding keyBinding = MAP.lookupActive(key);
         if (keyBinding == null) return;
         keyBinding.setPressed(pressed);

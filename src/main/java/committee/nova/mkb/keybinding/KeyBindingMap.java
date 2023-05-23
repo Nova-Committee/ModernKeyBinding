@@ -18,7 +18,7 @@ public class KeyBindingMap {
 
     @Nullable
     public KeyBinding lookupActive(InputUtil.Key keyCode) {
-        KeyModifier activeModifier = KeyModifier.getActiveModifier();
+        final KeyModifier activeModifier = KeyModifier.getActiveModifier();
         if (!activeModifier.matches(keyCode)) {
             KeyBinding binding = getBinding(keyCode, activeModifier);
             if (binding != null) {
@@ -28,12 +28,30 @@ public class KeyBindingMap {
         return getBinding(keyCode, KeyModifier.NONE);
     }
 
+    public Set<KeyBinding> lookupActives(InputUtil.Key keyCode) {
+        final KeyModifier activeModifier = KeyModifier.getActiveModifier();
+        if (!activeModifier.matches(keyCode)) {
+            Set<KeyBinding> bindings = getBindings(keyCode, activeModifier);
+            if (!bindings.isEmpty()) return bindings;
+        }
+        return getBindings(keyCode, KeyModifier.NONE);
+    }
+
     @Nullable
     private KeyBinding getBinding(InputUtil.Key keyCode, KeyModifier keyModifier) {
         Collection<KeyBinding> bindings = map.get(keyModifier).get(keyCode);
         if (bindings == null) return null;
         for (KeyBinding binding : bindings) if (((IKeyBinding) binding).isActiveAndMatches(keyCode)) return binding;
         return null;
+    }
+
+    private Set<KeyBinding> getBindings(InputUtil.Key keyCode, KeyModifier keyModifier) {
+        Collection<KeyBinding> bindings = map.get(keyModifier).get(keyCode);
+        final Set<KeyBinding> toReturn = new HashSet<>();
+        if (bindings == null) return toReturn;
+        for (KeyBinding binding : bindings)
+            if (((IKeyBinding) binding).isActiveAndMatches(keyCode)) toReturn.add(binding);
+        return toReturn;
     }
 
     public List<KeyBinding> lookupAll(InputUtil.Key keyCode) {
