@@ -4,9 +4,10 @@ plugins {
     id("gg.essential.loom") version "0.10.0.+"
     id("dev.architectury.architectury-pack200") version "0.1.3"
     id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("maven-publish")
 }
 
-group = "committee.nova.mkb"
+group = "committee.nova.mkb.forge"
 version = project.property("version") as String
 val modId: String = project.property("modId") as String
 
@@ -122,3 +123,21 @@ tasks.withType<ProcessResources> {
 
 tasks.assemble.get().dependsOn(tasks.remapJar)
 
+publishing {
+    publications {
+        val mavenPublication by register("maven", MavenPublication::class) {
+            from(components["java"])
+            artifactId = "mkb-1.8.9"
+        }
+    }
+
+    repositories {
+        maven {
+            url = uri("https://maven.nova-committee.cn/releases")
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
+    }
+}
