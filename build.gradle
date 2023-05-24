@@ -14,7 +14,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {
+        classpath('com.anatawa12.forge:ForgeGradle:1.2-1.1.+') {
             changing = true
         }
     }
@@ -27,6 +27,7 @@ configurations {
 apply plugin: 'scala'
 apply plugin: 'forge'
 apply plugin: 'idea'
+apply plugin: 'maven-publish'
 
 version = "${version}"
 group = "${group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -62,6 +63,28 @@ processResources
                 exclude 'mcmod.info'
             }
         }
+
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'mkb-1.7.10'
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        maven {
+            name = "release"
+            url = 'https://maven.nova-committee.cn/releases'
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
+    }
+}
 
 //##########################################################################################################
 //########################################    Mixin  Part   ################################################
