@@ -17,7 +17,9 @@ repositories {
 ```groovy
 dependencies {
     //...
-    implementation "committee.nova.mkb.forge:mkb-${mc_version}:${mod_version}"
+    implementation "committee.nova.mkb.forge:mkb-${mc_version}:${mod_version}" {
+        transitive = false
+    }
 }
 ```
 
@@ -25,7 +27,9 @@ dependencies {
 ```groovy
 dependencies {
     //...
-    modImplementation "committee.nova.mkb.fabric:mkb-${mc_version}:${mod_version}"
+    modImplementation "committee.nova.mkb.fabric:mkb-${mc_version}:${mod_version}" {
+        transitive = false
+    }
 }
 ```
 
