@@ -2,20 +2,30 @@
 
 ### Import as a gradle dependency
 
-Check the latest version on [JitPack](https://jitpack.io/#Nova-Committee/ModernKeyBinding "JitPack").
+Check the latest version on [Nova Maven Repository](https://maven.nova-committee.cn/#/releases/committee/nova/mkb).
 
-[![](https://jitpack.io/v/Nova-Committee/ModernKeyBinding.svg)](https://jitpack.io/#Nova-Committee/ModernKeyBinding)
 ```groovy
 repositories {
     //...
-    maven { url 'https://jitpack.io' }
+    maven {
+        url "https://maven.nova-committee.cn/releases"
+    }
 }
 ```
 
+#### Forge
 ```groovy
 dependencies {
     //...
-    implementation 'com.github.Nova-Committee:ModernKeyBinding:Forge-1.7.10-1.2.0'
+    implementation "committee.nova.mkb.forge:mkb-${mc_version}:${mod_version}"
+}
+```
+
+#### Fabric
+```groovy
+dependencies {
+    //...
+    modImplementation "committee.nova.mkb.fabric:mkb-${mc_version}:${mod_version}"
 }
 ```
 
