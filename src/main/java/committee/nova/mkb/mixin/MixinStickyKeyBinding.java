@@ -16,7 +16,7 @@ public abstract class MixinStickyKeyBinding extends KeyBinding {
     @Redirect(method = "setPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/KeyBinding;setPressed(Z)V", ordinal = 0))
     private void redirect$setPressed(KeyBinding instance, boolean pressed) {
         if (!((IKeyBinding) this).isConflictContextAndModifierActive()) return;
-        instance.setPressed(!isPressed());
+        super.setPressed(!isPressed());
     }
 
 
