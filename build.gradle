@@ -73,7 +73,7 @@ jar {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = 'mkb-1.20'
+            artifactId = 'mkb-1.20.1'
             from components.java
         }
     }
