@@ -1,15 +1,13 @@
 package committee.nova.mkb;
 
+import committee.nova.mkb.compat.ControllingCompat;
 import committee.nova.mkb.config.Config;
 import net.fabricmc.api.ClientModInitializer;
-
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+import net.fabricmc.loader.api.FabricLoader;
 
 public class ModernKeyBinding implements ClientModInitializer {
     private static Config config;
     private static boolean nonConflictKeys;
-    public static Logger LOGGER = LogManager.getLogManager().getLogger("mkb");
 
     @Override
     public void onInitializeClient() {
@@ -18,6 +16,13 @@ public class ModernKeyBinding implements ClientModInitializer {
                         + "nonConflictKeys=true"
         ).request();
         nonConflictKeys = config.getOrDefault("nonConflictKeys", false);
+        if (FabricLoader.getInstance().isModLoaded("controlling")) {
+            try {
+                ControllingCompat.init();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static Config getConfig() {
