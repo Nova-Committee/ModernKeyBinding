@@ -2,7 +2,6 @@ package committee.nova.mkb.mixin;
 
 import committee.nova.mkb.api.IKeyBinding;
 import committee.nova.mkb.keybinding.KeyModifier;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.ControlsListWidget;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
