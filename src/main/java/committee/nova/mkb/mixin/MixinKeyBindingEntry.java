@@ -31,7 +31,8 @@ public abstract class MixinKeyBindingEntry {
     private void inject$init(ControlsListWidget controlsListWidget, KeyBinding binding, Text text, CallbackInfo ci) {
         resetButton = ButtonWidget.builder(Text.translatable("controls.reset"), button -> {
                     ((IKeyBinding) binding).setToDefault();
-                    ((AccessorScreen) ((AccessorControlsListWidget) outerThis).getParent()).getClient().options.setKeyCode(binding, binding.getDefaultKey());
+                    binding.setBoundKey(binding.getDefaultKey());
+                    ((AccessorScreen) ((AccessorControlsListWidget) outerThis).getParent()).getClient().options.write();
                     outerThis.update();
                 }).dimensions(0, 0, 50, 20).narrationSupplier(textSupplier -> Text.translatable("narrator.controls.reset", bindingName))
                 .build();
