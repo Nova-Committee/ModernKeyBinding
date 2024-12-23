@@ -2,7 +2,6 @@ package committee.nova.mkb.mixin;
 
 import committee.nova.mkb.api.IKeyBinding;
 import committee.nova.mkb.keybinding.KeyModifier;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.ControlsListWidget;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
@@ -44,13 +43,15 @@ public abstract class MixinKeybindsScreen extends GameOptionsScreen {
             final IKeyBinding extended = (IKeyBinding) selectedKeyBinding;
             if (keyCode == 256) {
                 extended.setKeyModifierAndCode(KeyModifier.getActiveModifier(), InputUtil.UNKNOWN_KEY);
-                this.gameOptions.setKeyCode(selectedKeyBinding, InputUtil.UNKNOWN_KEY);
+                selectedKeyBinding.setBoundKey(InputUtil.UNKNOWN_KEY);
             } else {
-                extended.setKeyModifierAndCode(KeyModifier.getActiveModifier(), InputUtil.fromKeyCode(keyCode, scanCode));
-                this.gameOptions.setKeyCode(selectedKeyBinding, InputUtil.fromKeyCode(keyCode, scanCode));
+                InputUtil.Key key = InputUtil.fromKeyCode(keyCode, scanCode);
+                extended.setKeyModifierAndCode(KeyModifier.getActiveModifier(), key);
+                selectedKeyBinding.setBoundKey(key);
             }
             if (!KeyModifier.isKeyCodeModifier(((IKeyBinding) selectedKeyBinding).getKey())) selectedKeyBinding = null;
             this.lastKeyCodeUpdateTime = Util.getMeasuringTimeMs();
+            this.gameOptions.write(); // Save the changes
             this.controlsList.update();
             cir.setReturnValue(true);
             return;
@@ -58,15 +59,19 @@ public abstract class MixinKeybindsScreen extends GameOptionsScreen {
         cir.setReturnValue(super.keyPressed(keyCode, scanCode, modifiers));
     }
 
-    @Redirect(method = "init", at = @At(
+    @Redirect(method = "initFooter", at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screen/option/KeybindsScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;",
-            ordinal = 0)
-    )
-    private Element redirect$init(KeybindsScreen instance, Element element) {
-        return this.addDrawableChild(ButtonWidget.builder(Text.translatable("controls.resetAll"), b -> {
-            for (KeyBinding keyBinding : this.gameOptions.allKeys) ((IKeyBinding) keyBinding).setToDefault();
-            controlsList.update();
-        }).dimensions(this.width / 2 - 155, this.height - 29, 150, 20).build());
+            target = "Lnet/minecraft/client/gui/widget/ButtonWidget$Builder;build()Lnet/minecraft/client/gui/widget/ButtonWidget;",
+            ordinal = 0
+    ))
+    private ButtonWidget redirect$initFooter(ButtonWidget.Builder instance) {
+        return ButtonWidget.builder(Text.translatable("controls.resetAll"), button -> {
+            for (KeyBinding keyBinding : this.gameOptions.allKeys) {
+                ((IKeyBinding) keyBinding).setToDefault();
+            }
+
+            this.controlsList.update();
+        }).build();
+
     }
 }
