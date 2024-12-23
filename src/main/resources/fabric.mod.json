@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "mkb",
+  "version": "${version}",
+  "name": "ModernKeyBinding",
+  "description": "",
+  "authors": [
+    "Tapio"
+  ],
+  "contributors": [
+    "spottenn"
+  ]
+  "contact": {},
+  "license": "AGPL-3.0",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "committee.nova.mkb.ModernKeyBinding"
+    ]
+  },
+  "mixins": [
+    "mkb.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "minecraft": "*"
+  }
+}
