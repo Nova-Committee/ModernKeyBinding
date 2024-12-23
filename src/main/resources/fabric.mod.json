@@ -7,6 +7,9 @@
   "authors": [
     "Tapio"
   ],
+  "contributors": [
+    "spottenn"
+  ]
   "contact": {},
   "license": "AGPL-3.0",
   "environment": "client",
